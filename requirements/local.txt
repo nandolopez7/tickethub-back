@@ -1,0 +1,5 @@
+-r ./base.txt
+
+# postgresql
+psycopg2==2.9.5
+

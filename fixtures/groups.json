@@ -1,0 +1,5 @@
+[
+    {"model": "auth.Group", "pk": 1, "fields": {"name": "ADMIN"}},
+    {"model": "auth.Group", "pk": 2, "fields": {"name": "ORGANIZADOR"}},
+    {"model": "auth.Group", "pk": 3, "fields": {"name": "ASISTENTE"}}
+]

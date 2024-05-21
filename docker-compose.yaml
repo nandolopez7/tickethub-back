@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  # Servicio REST
+  django:
+    build: 
+      context: .
+      dockerfile: compose/local/django/Dockerfile
+    container_name: tickethub-django-container
+    command: /start
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app

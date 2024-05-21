@@ -1,0 +1,6 @@
+# PostgreSQL
+POSTGRES_HOST=roundhouse.proxy.rlwy.net
+POSTGRES_PORT=16407
+POSTGRES_DB=railway
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=TEczmEPQxglnxmIczofRxQFuxXmznUkl
