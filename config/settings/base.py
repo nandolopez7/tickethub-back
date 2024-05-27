@@ -69,6 +69,7 @@ BASE_APPS = [
 LOCAL_APPS = [
     'tickethub_back.users.apps.UsersConfig',
     'tickethub_back.utils.apps.UtilsConfig',
+    'tickethub_back.events.apps.EventsConfig',
 ]
 
 THIRD_APPS = [

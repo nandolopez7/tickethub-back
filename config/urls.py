@@ -41,6 +41,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path('', include(('tickethub_back.users.urls', 'users'), namespace='users')),
+    path('', include(('tickethub_back.events.urls', 'users'), namespace='users')),
 ] 
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
