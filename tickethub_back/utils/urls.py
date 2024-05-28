@@ -10,7 +10,7 @@ from rest_framework.routers import DefaultRouter
 from tickethub_back.utils import views
 
 router = DefaultRouter()
-
+router.register(r'utils/rekognition', views.RekognitionViewSet, basename='utils')
 
 urlpatterns = [
     path('', include(router.urls)),
