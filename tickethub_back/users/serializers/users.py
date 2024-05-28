@@ -24,6 +24,8 @@ from django.utils import timezone
 from tickethub_back.users.models.users import BloquedUser
 from tickethub_back.utils.custom_regex_validators import CellNumberRegexValidator
 from tickethub_back.utils.serializers.globals import DataChoiceSerializer
+from tickethub_back.utils.logic.rekognition import RekognitionLogicClass
+from tickethub_back.utils.custom_exceptions import CustomAPIException
 
 
 class UserModelSerializer(serializers.ModelSerializer):
@@ -195,6 +197,13 @@ class UpdateAndCreateUserSerializer(serializers.ModelSerializer):
 
                 if errors:
                     raise serializers.ValidationError(errors)
+        print("*** data['photo']: ", data['photo'])
+        rekognition = RekognitionLogicClass(image_source=data['photo'])
+        try:
+            rekognition.detect_faces()
+        except CustomAPIException as err:
+            print("*** err.default_detail: ", err.default_detail)
+            raise serializers.ValidationError({'detail': err.default_detail['message']})
                 
         return super().validate(data)
 
