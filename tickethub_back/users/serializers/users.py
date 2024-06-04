@@ -140,22 +140,21 @@ class UpdateAndCreateUserSerializer(serializers.ModelSerializer):
     """
     Update and create user serializer.
     """
-    first_name = serializers.CharField(max_length=150, required=False)
-    last_name = serializers.CharField(max_length=150, required=False)
-    username = serializers.CharField(max_length=150)
+    first_name = serializers.CharField(max_length=150)
+    last_name = serializers.CharField(max_length=150)
+    username = serializers.CharField(max_length=150, required=False)
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=User.objects.all(), 
         lookup='icontains')]
     )
-    cel_number_regex = CellNumberRegexValidator(
-        message="El formato permitido es 3112224455"
-    )
-    phone_number = serializers.CharField(validators=[cel_number_regex], max_length=10, required=False)
+    """ cel_number_regex = CellNumberRegexValidator(
+        message="El formato permitido es 3112224455", required=False
+    ) """
+    """ phone_number = serializers.CharField(validators=[cel_number_regex], max_length=10, required=False) """
     identification_number =  serializers.IntegerField(
         validators=[UniqueValidator(queryset=User.objects.all())],
         min_value=111111,
-        max_value=9999999999,
-        required=False
+        max_value=9999999999
     )
     identification_type = serializers.ChoiceField(
         choices=User.IdentificationTypeChoices.choices,
