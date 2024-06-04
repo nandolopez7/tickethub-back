@@ -16,10 +16,6 @@ from tickethub_back.users.serializers.users import UserModelSerializer
 
 
 class EventModelSerializer(serializers.ModelSerializer):
-    city = DataSerializer()
-    organizer = UserModelSerializer()
-    event_type = DataSerializer()
-    info_event = serializers.SerializerMethodField()
 
     def get_info_event(self, obj):
         time_value = time(obj.time.hour, obj.time.minute, obj.time.second)
