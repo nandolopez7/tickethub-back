@@ -20,16 +20,26 @@ class EventManager(models.Manager):
 
 class Event(DateBaseModel):
 
+    class CategoryChoices(models.TextChoices):
+        COMEDIA = 'Comedia'
+        FESTIVAL = 'Festival'
+        EXPOSICION = 'Exposición'
+        DEPORTES = 'Deportes'
+        CONCIERTO = 'Concierto'
+
     name = models.TextField(max_length=150, verbose_name='Name')
     date = models.DateField(
-        'Event Date', help_text='Date the event will take place.'
+        'Event Date', help_text='Date the event will take place.', null=True
     )
     time = models.TimeField(
-        'Event Time', help_text='Time the event will take place.'
+        'Event Time', help_text='Time the event will take place.', null=True
     )
     place = models.TextField(max_length=250, verbose_name='Place')
     file_cover = models.URLField(null=True)
     is_active = models.BooleanField(default=True)
+
+    description = models.TextField(max_length=150, verbose_name='Description', blank=True)
+    category = models.CharField(max_length=30, choices=CategoryChoices.choices)
 
     objects = EventManager()
 
