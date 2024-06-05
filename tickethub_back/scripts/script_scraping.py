@@ -89,21 +89,22 @@ if eventos:
         # Dentro del bucle donde obtienes los detalles de cada evento
         fecha_str = f'{fecha_dia} {fecha_mes_anio}'
         fecha_evento = datetime.datetime.strptime(fecha_str, '%d %b %Y')
+        
+        if not Event.objects.filter(name=nombre).exists():  # Si el evento no existe, se crea
+            evento= Event.objects.create(
+                        name=nombre,
+                        date=fecha_evento,
+                        time=datetime.time(0, 0),  # Puedes modificar esto para extraer la hora correcta
+                        place=lugar,
+                        file_cover=foto_url,
+                        is_active=True
+                    )
+        
+            evento.save()
 
-        evento= Event.objects.create(
-                    name=nombre,
-                    date=fecha_evento,
-                    time=datetime.time(0, 0),  # Puedes modificar esto para extraer la hora correcta
-                    place=lugar,
-                    file_cover=foto_url,
-                    is_active=True
-                )
-    
-        evento.save()
-
-        print(evento)
-        # Agregar el diccionario a la lista
-        lista_eventos.append(detalles_evento)
+            print(evento)
+            # Agregar el diccionario a la lista
+            lista_eventos.append(detalles_evento)
 
 # Imprimir los detalles de los eventos
 for evento in lista_eventos:
