@@ -77,10 +77,14 @@ class UserViewSet(mixins.ListModelMixin,
 
             Permite crear usuarios, los cuales podrán logearse en el sistema.
         """
+        print("Entra aqui")
         print("*** datos recibidos del usuario: ", request.data)
         serializer = serializers.UpdateAndCreateUserSerializer(
             data=request.data
         )
+        print("es valido?")
+        print(serializer.is_valid(raise_exception=True))
+
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = self.get_serializer(instance=user).data

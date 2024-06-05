@@ -24,6 +24,8 @@ from django.utils import timezone
 from tickethub_back.users.models.users import BloquedUser
 from tickethub_back.utils.custom_regex_validators import CellNumberRegexValidator
 from tickethub_back.utils.serializers.globals import DataChoiceSerializer
+from tickethub_back.utils.logic.rekognition import RekognitionLogicClass
+from tickethub_back.utils.custom_exceptions import CustomAPIException
 
 
 class UserModelSerializer(serializers.ModelSerializer):
@@ -138,22 +140,21 @@ class UpdateAndCreateUserSerializer(serializers.ModelSerializer):
     """
     Update and create user serializer.
     """
-    first_name = serializers.CharField(max_length=150, required=False)
-    last_name = serializers.CharField(max_length=150, required=False)
-    username = serializers.CharField(max_length=150)
+    first_name = serializers.CharField(max_length=150)
+    last_name = serializers.CharField(max_length=150)
+    username = serializers.CharField(max_length=150, required=False)
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=User.objects.all(), 
         lookup='icontains')]
     )
-    cel_number_regex = CellNumberRegexValidator(
-        message="El formato permitido es 3112224455"
-    )
-    phone_number = serializers.CharField(validators=[cel_number_regex], max_length=10, required=False)
+    """ cel_number_regex = CellNumberRegexValidator(
+        message="El formato permitido es 3112224455", required=False
+    ) """
+    """ phone_number = serializers.CharField(validators=[cel_number_regex], max_length=10, required=False) """
     identification_number =  serializers.IntegerField(
         validators=[UniqueValidator(queryset=User.objects.all())],
         min_value=111111,
-        max_value=9999999999,
-        required=False
+        max_value=9999999999
     )
     identification_type = serializers.ChoiceField(
         choices=User.IdentificationTypeChoices.choices,
@@ -195,6 +196,13 @@ class UpdateAndCreateUserSerializer(serializers.ModelSerializer):
 
                 if errors:
                     raise serializers.ValidationError(errors)
+        print("*** data['photo']: ", data['photo'])
+        rekognition = RekognitionLogicClass(image_source=data['photo'])
+        try:
+            rekognition.detect_faces()
+        except CustomAPIException as err:
+            print("*** err.default_detail: ", err.default_detail)
+            raise serializers.ValidationError({'detail': err.default_detail['message']})
                 
         return super().validate(data)
 
