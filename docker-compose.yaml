@@ -3,16 +3,52 @@ version: '3'
 services:
 
   # Servicio REST
-  django:
+  django: &django
     build: 
       context: .
       dockerfile: compose/local/django/Dockerfile
-    container_name: tickethub-django-container
+    image: tickethub-django-container
     command: /start
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
     ports:
       - "8000:8000"
+      - "587:587"
+      - "25:25"
     volumes:
       - .:/app
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+
+  redis:
+    image: "redis:latest"
+    sysctls:
+      net.core.somaxconn: '511'
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+
+  celeryworker:
+    <<: *django
+    image: local_celeryworker
+    depends_on:
+      - redis
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: local_celerybeat
+    depends_on:
+      - redis
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: local_flower
+    ports:
+      - "5555:5555"
+    command: /start-flower
