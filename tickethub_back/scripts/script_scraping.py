@@ -1,6 +1,6 @@
 import datetime
-import sys
 import os
+import random
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.base')
 import django
@@ -13,7 +13,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from tickethub_back.events.models.events import Event
-from tickethub_back.events.serializers.events import EventSerializer
 
 import time
 
@@ -64,6 +63,8 @@ soup = BeautifulSoup(driver.page_source, 'html.parser')
 # Encontrar todos los eventos
 eventos = soup.find_all('div', class_='event')
 
+categories = Event.CategoryChoices.choices
+
 # Lista para almacenar los detalles de los eventos
 lista_eventos = []
 
@@ -89,6 +90,7 @@ if eventos:
         # Dentro del bucle donde obtienes los detalles de cada evento
         fecha_str = f'{fecha_dia} {fecha_mes_anio}'
         fecha_evento = datetime.datetime.strptime(fecha_str, '%d %b %Y')
+        category = str(random.choices(categories)[0][0]).lower().capitalize()
         
         if not Event.objects.filter(name=nombre).exists():  # Si el evento no existe, se crea
             evento= Event.objects.create(
@@ -97,7 +99,8 @@ if eventos:
                         time=datetime.time(0, 0),  # Puedes modificar esto para extraer la hora correcta
                         place=lugar,
                         file_cover=foto_url,
-                        is_active=True
+                        is_active=True,
+                        category=category
                     )
         
             evento.save()

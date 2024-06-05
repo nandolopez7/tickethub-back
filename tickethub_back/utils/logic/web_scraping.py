@@ -1,5 +1,6 @@
 import datetime
 import requests
+import random
 
 from bs4 import BeautifulSoup
 
@@ -14,18 +15,21 @@ class WebScraping:
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
         events = soup.find_all('div', class_='item-box-event')
+        categories = Event.CategoryChoices.choices
         list_events = []
         
         for event in events:
             nombre = event.find('h3', class_='item-box-content-title').text.strip()
-            info_fecha = event.find('div', class_='item-box-content-subtitle').text.strip().split("y")
-            fecha_str = info_fecha[len(info_fecha)-1].replace('Viernes', '').replace('Lunes', '') \
+            info_fecha_str = event.find('div', class_='item-box-content-subtitle').text.strip()
+            info_fecha_list = info_fecha_str.split("y")
+            fecha_str = info_fecha_list[len(info_fecha_list)-1].replace('Viernes', '').replace('Lunes', '') \
                 .replace('Martes', '').replace('Miércoles', '').replace('Jueves', '').replace('Sábado', '') \
                 .replace('Domingo', '').replace('de', '').strip()
             date_event = self.convertir_fecha(fecha_str)
             place = event.find('span').text.strip()
             element_img = event.find('img')
             file_cover = url + element_img['src'] if element_img else ''
+            category = str(random.choices(categories)[0][0]).lower().capitalize()
 
             detalles_evento = {
                 'name': nombre,
@@ -33,7 +37,9 @@ class WebScraping:
                 'place': place,
                 'file_cover': file_cover,
                 'is_active': True,
-                'time': datetime.time(0, 0)
+                'time': datetime.time(0, 0),
+                'category': category,
+                'description': info_fecha_str,
             }
             print("*** detalles_evento: ", detalles_evento)
             
@@ -60,4 +66,4 @@ class WebScraping:
             return datetime.datetime.strptime(fecha_format, '%d-%m-%Y')
         except Exception as e:
             print("** error fecha: ", e)
-            return datetime.datetime.now().date()
+            return None
