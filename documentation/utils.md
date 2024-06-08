@@ -41,6 +41,11 @@ Ejecutar pruebas
 docker-compose run --rm django pytest
 ```
 
+Traducción
+```
+docker-compose run --rm django python manage.py makemessages -l es  --> Crear archivos de traducción
+docker-compose run --rm django python manage.py compilemessages  --> Compilar archivos de traducción
+```
 
 # Entornos virtuales
 

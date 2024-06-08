@@ -176,9 +176,19 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = [
+    ('en', 'English'),
+    ('es', 'Spanish'),
+    # Agrega otros idiomas que necesites
+]
+
+# Agrega la ruta del directorio 'locale' en tu proyecto
+LOCALE_PATHS = [
+    os.path.join(ROOT_DIR, 'locale'),
+]
+
 # Language and timezone
 TIME_ZONE = 'America/Bogota'
-LANGUAGE_CODE = 'es-CO'
 
 # USE_I18N = True
 
