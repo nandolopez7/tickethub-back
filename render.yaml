@@ -1,6 +1,7 @@
 services:
   - type: web
     name: django
+    runtime: python
     plan: free
     buildCommand: docker-compose -f docker-compose.yml build
     startCommand: docker-compose -f docker-compose.yml up
