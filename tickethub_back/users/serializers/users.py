@@ -1,5 +1,9 @@
 """Users serializers."""
 from datetime import datetime
+try:
+    from django.utils.translation import gettext as _
+except ImportError:
+    from django.utils.translation import ugettext as _
 
 # Django
 from django.contrib.auth import authenticate, password_validation
@@ -57,14 +61,14 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, data):
         user = authenticate(username=data['email'], password=data['password'])
         if not user:
-            raise serializers.ValidationError({'detail': 'Credenciales invalidas.'})
+            raise serializers.ValidationError({'detail': _('Credenciales invalidas.')})
         
         user_bloqued = BloquedUser.objects.filter(user=user, fecha_vigencia_bloqueo__gte=datetime.now()).first()
         if user_bloqued:
-            raise serializers.ValidationError({'detail': 'Cuenta bloqueada. {}'.format(user_bloqued.observacion)})
+            raise serializers.ValidationError({'detail': _('Cuenta bloqueada. {}'.format(user_bloqued.observacion))})
 
         if not user.is_active:
-            raise serializers.ValidationError({'detail': 'Cuenta no activa, por favor comuniquese con el administrador.'})
+            raise serializers.ValidationError({'detail': _('Cuenta no activa, por favor comuniquese con el administrador.')})
         self.context['user'] = user
         return super().validate(data)
 
@@ -85,10 +89,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class UserTokenSerializer(serializers.Serializer):
     refresh = serializers.CharField(
-        help_text="Token de mayor duración que puede ser usado para obtener un nuevo token de acceso."
+        help_text=_("Token de mayor duración que puede ser usado para obtener un nuevo token de acceso.")
     )
     access = serializers.CharField(
-        help_text="Token de acceso que debe ser enviado en la cabecera de todas las demás API's."
+        help_text=_("Token de acceso que debe ser enviado en la cabecera de todas las demás API's.")
     )
 
 
@@ -96,7 +100,7 @@ class RefreshTokenSerializer(serializers.Serializer):
     refresh = serializers.CharField()
 
     default_error_messages = {
-        'bad_token': 'Token is invalid or expired'
+        'bad_token': _('Token is invalid or expired')
     }
 
     def validate(self, attrs):
@@ -122,12 +126,12 @@ class ValidateSendResetPassword(serializers.Serializer):
         user = User.objects.filter(email=email).first()
         if user is None:
             raise serializers.ValidationError(
-                "No pudimos encontrar una cuenta asociada con ese correo electrónico. Pruebe con una dirección de correo electrónico diferente."
+               _( "No pudimos encontrar una cuenta asociada con ese correo electrónico. Pruebe con una dirección de correo electrónico diferente.")
             )
         
         user_bloqued = BloquedUser.objects.filter(user=user, fecha_vigencia_bloqueo__gte=datetime.now()).first()
         if user_bloqued:
-            raise serializers.ValidationError({'detail': 'Cuenta bloqueada. {}'.format(user_bloqued.observacion)})
+            raise serializers.ValidationError({'detail': _('Cuenta bloqueada. {}'.format(user_bloqued.observacion))})
         return email
 
 

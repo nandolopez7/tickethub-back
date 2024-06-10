@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -51,4 +53,4 @@ class RekognitionViewSet(viewsets.GenericViewSet):
 
         except Exception as error:
             print("Error obteniendo imagen " + str(data) + str(error))
-            raise Exception('No es posible acceder a los parametros. ' + str(error))
+            raise Exception(_('No es posible acceder a los parametros. ') + str(error))

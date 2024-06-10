@@ -1,6 +1,10 @@
 import boto3
 from django.conf import settings
-
+try:
+    from django.utils.translation import gettext as _
+except ImportError:
+    from django.utils.translation import ugettext as _
+    
 from tickethub_back.utils.custom_exceptions import CustomAPIException
 
 """
@@ -49,7 +53,7 @@ class RekognitionLogicClass:
             if not len(response['FaceMatches']):
                 raise CustomAPIException({
                     "ok": False,
-                    "message": "No existe similitud entre las imagenes",
+                    "message": _("No existe similitud entre las imagenes"),
                     "data": None
                 })
 
@@ -58,13 +62,13 @@ class RekognitionLogicClass:
             if similarity < 60:
                 raise CustomAPIException({
                     "ok": False,
-                    "message": "La calidad de las imagenes no permite validar su similitud",
+                    "message": _("La calidad de las imagenes no permite validar su similitud"),
                     "data": None
                 })
 
             return {
                 "ok": True,
-                "message": "Validación exitosa",
+                "message": _("Validación exitosa"),
                 "data": {"similarity": similarity}
             }
         except CustomAPIException as err:
@@ -72,7 +76,7 @@ class RekognitionLogicClass:
         except Exception as err:
             raise CustomAPIException({
                 "ok": False,
-                "message": "Error validando las imágenes",
+                "message": _("Error validando las imágenes"),
                 "data": str(err)
             })
 
@@ -105,20 +109,20 @@ class RekognitionLogicClass:
             if len(response['FaceDetails']) == 0:
                 raise CustomAPIException({
                     "ok": False,
-                    "message": "No se detectó ningún rostro en la imagen",
+                    "message": _("No se detectó ningún rostro en la imagen"),
                     "data": None
                 })
 
             if len(response['FaceDetails']) > 1:
                 raise CustomAPIException({
                     "ok": False,
-                    "message": "Se detectó más de un rostro en la imagen",
+                    "message": _("Se detectó más de un rostro en la imagen"),
                     "data": None
                 })
             confidence = response["FaceDetails"][0]["Confidence"]  # La confianza en la detección del rostro 
             return {
                 "ok": True,
-                "message": "Validación exitosa",
+                "message": _("Validación exitosa"),
                 "data": {"confidence": confidence}
             }
         except CustomAPIException as err:
@@ -126,7 +130,7 @@ class RekognitionLogicClass:
         except Exception as err:
             raise CustomAPIException({
                 "ok": False,
-                "message": "Error validando las imágenes",
+                "message": _("Error validando las imágenes"),
                 "data": str(err)
             })
         
