@@ -1,0 +1,12 @@
+services:
+  - name: django
+    env: production
+    plan: free
+    buildCommand: docker-compose -f docker-compose.yml build
+    startCommand: docker-compose -f docker-compose.yml up
+    healthCheckPath: /
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
