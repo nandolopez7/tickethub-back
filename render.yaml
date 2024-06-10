@@ -1,5 +1,6 @@
 services:
-  - name: django
+  - type: web
+    name: django
     env: production
     plan: free
     buildCommand: docker-compose -f docker-compose.yml build
