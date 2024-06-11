@@ -1,6 +1,6 @@
 # PostgreSQL
-POSTGRES_HOST=dpg-cpjm4v2cn0vc73aonha0-a.oregon-postgres.render.com
-POSTGRES_PORT=5432
-POSTGRES_DB=tickethub_bd
-POSTGRES_USER=tickethub_bd_user
-POSTGRES_PASSWORD=9FqXHPy9e49aOnCi2rxqyuJgLWPNa2GN
+POSTGRES_HOST=roundhouse.proxy.rlwy.net
+POSTGRES_PORT=18633
+POSTGRES_DB=railway
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=qsgiEtmRHRBhkLeCagbyuFYMiWPWsiOn
