@@ -23,7 +23,6 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.contrib.auth.decorators import login_required
 
 
 schema_view = get_schema_view(
@@ -51,4 +50,5 @@ urlpatterns = [
     path('', include(('tickethub_back.utils.urls', 'utils'), namespace='utils')),
 ] 
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

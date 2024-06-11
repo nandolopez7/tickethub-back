@@ -47,14 +47,10 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1', 
     'localhost',
-    '3.138.171.121',
-    'tickethubapi.onrender.com',
-    'tickethub-back.onrender.com',
 ]
 
 CORS_ALLOWED_ORIGINS = [ 
     'http://localhost:3000',
-    'https://tickethubapi.onrender.com',
 ]
 
 
@@ -207,6 +203,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -263,3 +260,8 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERYD_TASK_TIME_LIMIT = 5 * 60
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
+
+# AWS
+AWS_ACCESS_KEY_ID = env('DJANGO_AWS_ACCESS_KEY_ID', default="")
+AWS_SECRET_ACCESS_KEY = env('DJANGO_AWS_SECRET_ACCESS_KEY', default="")
+AWS_DEFAULT_REGION = env('AWS_DEFAULT_REGION')
