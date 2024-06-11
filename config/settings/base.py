@@ -50,7 +50,9 @@ ALLOWED_HOSTS = [
     '3.138.171.121',
 ]
 
-CORS_ALLOWED_ORIGINS = [ 'http://localhost:3000',
+CORS_ALLOWED_ORIGINS = [ 
+    'http://localhost:3000',
+    'https://tickethubapi.onrender.com',
 ]
 
 
