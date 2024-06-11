@@ -83,6 +83,7 @@ THIRD_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
     'django_password_validators',
+    'storages',
 ]
 
 CALERY_APP = ['tickethub_back.taskapp.celery.CeleryAppConfig']
@@ -264,3 +265,18 @@ CELERYD_TASK_SOFT_TIME_LIMIT = 60
 AWS_ACCESS_KEY_ID = env('DJANGO_AWS_ACCESS_KEY_ID', default="")
 AWS_SECRET_ACCESS_KEY = env('DJANGO_AWS_SECRET_ACCESS_KEY', default="")
 AWS_DEFAULT_REGION = env('AWS_DEFAULT_REGION')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default="")
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_DEFAULT_REGION}.amazonaws.com'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+# Configuración para archivos estáticos
+STATIC_LOCATION = 'static'
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
+# Configuración para archivos de medios
+MEDIA_LOCATION = 'media'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
