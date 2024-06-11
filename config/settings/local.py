@@ -1,5 +1,4 @@
 from .base import *
-import dj_database_url
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -13,5 +12,5 @@ DEF_DATABASE_URL=f"postgres://{env('POSTGRES_USER')}:{env('POSTGRES_PASSWORD')}@
 
 # DATABASES
 DATABASES = {
-    'default': dj_database_url.config(default=DEF_DATABASE_URL,  conn_max_age=600),
+    'default': env.db('DATABASE_URL', default=DEF_DATABASE_URL),
 }

@@ -3,11 +3,7 @@
 set -o errexit
 
 # Modify this line as needed for your package manager (pip, poetry, etc.)
-pip install -r requirements/local.txt
-
-# Cargar variables de entorno
-export $(grep -v '^#' .envs/.local/.django | xargs)
-export $(grep -v '^#' .envs/.local/.postgres | xargs)
+pip install -r requirements/production.txt
 
 # Convert static asset files
 python manage.py collectstatic --no-input
