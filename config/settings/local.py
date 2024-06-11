@@ -23,7 +23,7 @@ DEF_DATABASE_URL=f"postgres://{env('POSTGRES_USER')}:{env('POSTGRES_PASSWORD')}@
 DATABASES = {
     'default': dj_database_url.config(default=DEF_DATABASE_URL,  conn_max_age=600),
 }
-print("*** DATABASES: ", DATABASES)
+
 AWS_ACCESS_KEY_ID = env('DJANGO_AWS_ACCESS_KEY_ID', default="")
 AWS_SECRET_ACCESS_KEY = env('DJANGO_AWS_SECRET_ACCESS_KEY', default="")
 AWS_DEFAULT_REGION = env('AWS_DEFAULT_REGION')
