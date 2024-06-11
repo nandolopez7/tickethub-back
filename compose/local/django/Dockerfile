@@ -1,5 +1,12 @@
 FROM python:3.9
 ENV PYTHONUNBUFFERED 1
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    gettext \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 COPY ./requirements/ /app/requirements/
 RUN pip install -r requirements/local.txt

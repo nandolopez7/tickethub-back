@@ -40,6 +40,7 @@ class Event(DateBaseModel):
 
     description = models.TextField(max_length=150, verbose_name='Description', blank=True)
     category = models.CharField(max_length=30, choices=CategoryChoices.choices)
+    price = models.BigIntegerField(default=10)
 
     objects = EventManager()
 

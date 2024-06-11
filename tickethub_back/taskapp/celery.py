@@ -18,10 +18,9 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.beat_schedule = {
     'ejecucion-automatica-web-scraping-periodic': {
         'task': 'ejecucion_automatica_web_scraping',
-        'schedule': crontab(hour='14', minute='58')
+        'schedule': crontab(hour='03', minute='00')
     }
 }
-print('***** app.conf.beat_schedule: ', app.conf.beat_schedule)
 app.conf.timezone = 'America/Bogota'
 
 

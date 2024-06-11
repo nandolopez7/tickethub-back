@@ -1,9 +1,14 @@
 """Views event."""
+from datetime import datetime
 # Django
 from django.utils.decorators import method_decorator
 from django.db import transaction
 from django.db.models import Sum
 
+try:
+    from django.utils.translation import gettext as _
+except ImportError:
+    from django.utils.translation import ugettext as _
 
 # Django REST Framework
 from rest_framework import viewsets, mixins, status
@@ -45,7 +50,7 @@ class EventViewSet(mixins.ListModelMixin,
     API de eventos
     """
 
-    queryset = Event.objects.all()
+    queryset = Event.objects.filter(date__gte=datetime.now().date()).all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['name', 'description']
     filterset_class = EventFilter
@@ -153,7 +158,7 @@ class EventViewSet(mixins.ListModelMixin,
                             'event': EventModelSerializer(instance=event).data,
                             'similarity': data_response['data']['similarity'],
                         },
-                        'message': "Validación exitosa" if is_same_event else "No corresponde al mismo evento"
+                        'message': _("Validación exitosa") if is_same_event else _("No corresponde al mismo evento")
                     }
                     return Response(data_result, status=status.HTTP_200_OK)
             except CustomAPIException as err:
@@ -162,7 +167,7 @@ class EventViewSet(mixins.ListModelMixin,
         data = {
             'ok': False,
             'data': None,
-            'message': "No se encontró coincidencias"
+            'message': _("No se encontró coincidencias")
         }
         return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -176,7 +181,7 @@ class EventViewSet(mixins.ListModelMixin,
             user_obj = User.objects.filter(id=user_id).first()
         
         if user_obj is None:
-            return Response(data={'detail': ["Usuario no encontrado"]}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'detail': [_("Usuario no encontrado")]}, status=status.HTTP_400_BAD_REQUEST)
         
         """ Consultar los distintos eventos a los cuales un usuario a comprado tickets """
         events = Event.objects.filter(

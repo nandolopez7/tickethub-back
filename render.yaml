@@ -1,0 +1,22 @@
+databases:
+  - name: tickethub_bd
+    plan: free
+    databaseName: tickethub_bd
+    user: tickethub_bd_user
+
+services:
+  - type: web
+    plan: free
+    name: tickethubapi
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker"    
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tickethub_bd
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
