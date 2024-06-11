@@ -10,7 +10,7 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [ 
-    'https://tickethub-front.vercel.app/'
+    'https://tickethub-front.vercel.app'
 ]
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
